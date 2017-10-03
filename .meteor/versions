@@ -111,6 +111,7 @@ templating@1.2.15
 templating-compiler@1.2.15
 templating-runtime@1.2.15
 templating-tools@1.1.2
+tmeasday:acceptance-test-driver@0.1.0
 tmeasday:check-npm-versions@0.2.0
 tracker@1.1.2
 ui@1.0.13

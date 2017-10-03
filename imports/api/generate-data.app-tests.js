@@ -7,6 +7,17 @@ import { Random } from 'meteor/random';
 import { Promise } from 'meteor/promise';
 import { _ } from 'meteor/underscore';
 
+// Convert an NPM-style function returning a callback to one that returns a Promise.
+export const denodeify = f => (...args) => new Promise((resolve, reject) => {
+  f(...args, (err, val) => {
+    if (err) {
+      reject(err);
+    } else {
+      resolve(val);
+    }
+  });
+});
+
 const createList = (userId) => {
   const list = Factory.create('list', { userId });
   _.times(3, () => Factory.create('todo', { listId: list._id }));
@@ -31,7 +42,8 @@ if (Meteor.isClient) {
   // We do this so there's no contention w/ the currently tested user's connection
   const testConnection = Meteor.connect(Meteor.absoluteUrl());
 
-  generateData = Promise.denodeify((cb) => {
+  // generateData = Promise.denodeify((cb) => {
+  generateData = denodeify((cb) => {
     testConnection.call('generateFixtures', cb);
   });
 }
